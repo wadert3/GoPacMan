@@ -7,17 +7,13 @@ func (game *Game) handleUserInput(event *tcell.EventKey) {
 	case tcell.KeyEscape:
 		game.setStateClosed()
 	case tcell.KeyLeft:
-		game.Pac.isMoving = true
-		game.Pac.moveDirection = "left"
+		game.setMoveDirection("left")
 	case tcell.KeyRight:
-		game.Pac.isMoving = true
-		game.Pac.moveDirection = "right"
+		game.setMoveDirection("right")
 	case tcell.KeyUp:
-		game.Pac.isMoving = true
-		game.Pac.moveDirection = "up"
+		game.setMoveDirection("up")
 	case tcell.KeyDown:
-		game.Pac.isMoving = true
-		game.Pac.moveDirection = "down"
+		game.setMoveDirection("down")
 	}
 }
 

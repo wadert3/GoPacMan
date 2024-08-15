@@ -15,6 +15,7 @@ type Game struct {
 	ticker           *time.Ticker
 	fpsCounterTicker *time.Ticker
 	frame            int
+	gameMap          [][]int
 }
 
 type PacMan struct {
@@ -29,7 +30,7 @@ type PacMan struct {
 	motionTicker  *time.Ticker
 }
 
-func buildBoard(layout [30][13]int) string {
+func buildBoard(layout [][]int) string {
 
 	var board strings.Builder
 
@@ -49,20 +50,21 @@ func buildBoard(layout [30][13]int) string {
 }
 
 func writeCharacter(value int) rune {
-	if value == 9 {
+	switch value {
+	case 9:
 		return '&'
-	}
-	if value == 8 {
+	case 8:
 		return ' '
-	}
-	if value == 1 {
-		return '•'
+	case 1:
+		return '.'
+	case 0:
+		return ' '
 	}
 
 	return 'x'
 }
 
-func getPacManLocation(layout [30][13]int) (coords [2]int, err error) {
+func getPacManLocation(layout [][]int) (coords [2]int, err error) {
 	for i := 0; i < 29; i++ {
 		for j := 0; j <= 12; j++ {
 			if layout[i][j] == 10 {
@@ -93,7 +95,7 @@ func (game *Game) writeBoardToScreen(board string) {
 }
 
 func (game *Game) draw() {
-	board := buildBoard(gameMap)
+	board := buildBoard(game.gameMap)
 	game.writeBoardToScreen(board)
 	game.screen.SetContent(game.Pac.playerX, game.Pac.playerY, game.Pac.pacRune, nil, game.Pac.pacStyle)
 
@@ -102,6 +104,7 @@ func (game *Game) draw() {
 func (game *Game) updateLoop() {
 	game.screen.Clear()
 	game.HandleMotion()
+	game.collectCookies()
 	game.draw()
 	game.screen.Show()
 }

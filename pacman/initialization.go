@@ -30,6 +30,7 @@ func InitializeGame(screen tcell.Screen) (game Game) {
 	game.forbiddenValues = []int{9, 8}
 	game.setStateActive()
 	game.screen = screen
+	game.gameMap = gameMap
 	game.Pac = game.initializePacMan()
 
 	log.Printf("%v", game)
@@ -37,7 +38,7 @@ func InitializeGame(screen tcell.Screen) (game Game) {
 }
 
 func (game *Game) initializePacMan() (pac PacMan) {
-	var pacManLocation, pacManLocationError = getPacManLocation(gameMap)
+	var pacManLocation, pacManLocationError = getPacManLocation(game.gameMap)
 
 	if pacManLocationError != nil {
 		log.Fatal(pacManLocationError)
